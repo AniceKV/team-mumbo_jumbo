@@ -11,7 +11,7 @@ Your mission is to **perfectly reassemble the network's topology** and restore t
 
 > [!IMPORTANT]  
 > **OPERATIONAL BRIEFING**  
-> The official guidelines, evaluation parameters, and scoring grids are documented in the [Official Rules Manual](file:///Users/aakashrajput/MachineLearning/model_sorting/public_github/RULES.md). Please review them before deploying solutions.
+> The official guidelines, evaluation parameters, and scoring grids are documented in the [Official Rules Manual](file:///Users/chocopie/OPERATION-REBUILD_FROM_CHAOS/RULES.md). Please review them before deploying solutions.
 
 ---
 
@@ -49,13 +49,10 @@ model-reconstruction-chaos/
 ├── data/
 │   ├── pieces/                    # Scrambled weight fragments (piece_0.pth to piece_N.pth)
 │   ├── historical_data.csv        # Calibration alignment telemetry
-│   └── metadata.json              # Public cryptographic validation hashes
 ├── samples/
 │   ├── sample_submission.csv      # Standard configuration layout
 │   └── random_submission.csv      # Example randomized baseline mapping
 ├── starter_kit.ipynb              # Guided interactive forensic starter notebook
-├── verify_submission.py           # Local score validation utility
-├── solve.py                       # Automated solver script
 ├── requirements.txt               # Required package dependencies
 ├── README.md                      # This main guide
 └── RULES.md                       # Comprehensive Rule Book
@@ -69,7 +66,7 @@ model-reconstruction-chaos/
 Operatives should establish their local working environment branch:
 ```bash
 # Clone the central NSOC challenge grid
-git clone https://github.com/nsoc-club/model-reconstruction-chaos.git
+git clone https://github.com/chocopie247/OPERATION-REBUILD_FROM_CHAOS.git
 cd model-reconstruction-chaos
 
 # Spawn your dedicated team branch
@@ -93,13 +90,6 @@ block_index,inp_piece,out_piece
 K-1,piece_Y.pth,piece_Z.pth
 ```
 *(Refer to the files in `samples/` for concrete layout formats).*
-
-### 4. Run the Local Grading Engine
-To validate your local submission against the public metadata, run the grading script:
-```bash
-python verify_submission.py submission.csv
-```
-
 ---
 
 ## 🏆 LEADERBOARD JUDGING & TIE-BREAKERS

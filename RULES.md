@@ -104,13 +104,10 @@ model-reconstruction-chaos/
 ├── data/
 │   ├── pieces/                    # Scrambled weight fragments (piece_0.pth to piece_N.pth)
 │   ├── historical_data.csv        # Calibration alignment telemetry
-│   └── metadata.json              # Cryptographic verification hashes
 ├── samples/
 │   ├── sample_submission.csv      # Standard configuration layout
 │   └── random_submission.csv      # Example randomized baseline mapping
 ├── starter_kit.ipynb              # Guided interactive forensic starter notebook
-├── verify_submission.py           # Local score validation utility
-├── solve.py                       # Automated solver script
 ├── requirements.txt               # Required package dependencies
 ├── README.md                      # Deployment instructions
 └── RULES.md                       # This Operations Manual

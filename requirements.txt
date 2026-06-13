@@ -1,0 +1,9 @@
+# Frozen contestant environment == the judge image (contest_kit/judge/Dockerfile).
+# Your solver runs against EXACTLY these versions on Python 3.11, CPU only.
+# requirements.txt in YOUR repo may only reference packages from this list (any
+# subset). Nothing is pip-installed at grading time.
+torch==2.3.1
+numpy==1.26.4
+pandas==2.2.2
+scipy==1.13.1
+scikit-learn==1.5.0
