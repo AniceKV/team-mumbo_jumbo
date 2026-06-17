@@ -150,18 +150,7 @@ The scrambled files consist of dictionary states containing weight and bias tens
 Each reconstructed block $k \in [0, K-1]$ maps incoming features $x$ using the following residual logic:
 
 $$
-\text{Block}_k(x)
-=
-x
-+
-W_{\text{out}}^{(k)}
-\,
-\text{ReLU}
-\left(
-W_{\text{in}}^{(k)}x+b_{\text{in}}^{(k)}
-\right)
-+
-b_{\text{out}}^{(k)}
+\text{Block}_k(x)=x+W_{\text{out}}^{(k)}\text{ReLU}\left(W_{\text{in}}^{(k)}x+b_{\text{in}}^{(k)}\right)+b_{\text{out}}^{(k)}
 $$
 
 The objective is to discover the correct pairings $(W_{\text{in}}^{(k)}, W_{\text{out}}^{(k)})$ and sequence order $0 \dots K-1$ that reconstructs the network.
