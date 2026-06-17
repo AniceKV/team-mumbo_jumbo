@@ -1,86 +1,252 @@
 # NSOC COMMAND: THE MODEL RECONSTRUCTION CHALLENGE
-### Operation: Rebuild from Chaos
 
-Welcome, Operative, to the **NSOC Model Reconstruction Grid**! 
+## Operation: Rebuild from Chaos
 
-A database corruption event has fragmented a deep residual network. Its **$N$ constituent linear layers and block parameters** have been shattered into an unlabeled collection of weights (`piece_0.pth` to `piece_N.pth`). 
+Welcome, Operative, to the **NSOC Model Reconstruction Grid**.
 
-Your mission is to **perfectly reassemble the network's topology** and restore the model grid to achieve a Mean Squared Error (MSE) of **exactly 0.0** against the original intact model's classification predictions.
+A catastrophic database corruption event has fragmented a trained deep residual network into an unlabeled collection of weight components. The model's **N constituent linear layers and block parameters** have been scattered across files named:
 
----
+```text
+piece_0.pth ... piece_N.pth
+```
 
-> [!IMPORTANT]  
-> **OPERATIONAL BRIEFING**  
-> The official guidelines, evaluation parameters, and scoring grids are documented in the [Official Rules Manual](RULES.md). Please review them before deploying solutions.
+Your mission is to reverse-engineer the network, reconstruct its original topology, and restore the model with **perfect fidelity**.
 
----
-
-## THE SCRAMBLED COMPONENTS & MATRIX SHAPES
-
-All $N$ weight fragments are isolated inside `data/pieces/`. To begin reassembly, you must classify each piece based on its **weight tensor dimensions**:
-
-1.  **Front Projection Layer (`proj`):** Maps the input space dimension ($D_{\text{in}}$) to the intermediate latent space ($D_{\text{latent}}$).
-2.  **Output Classification Layer (`last`):** Maps intermediate latent features ($D_{\text{latent}}$) to output classes ($D_{\text{classes}}$).
-3.  **Block Input Projections ($W_{\text{in}}$):** Maps latent space dimensions to sub-block projection features ($D_{\text{sub}}$).
-4.  **Block Output Projections ($W_{\text{out}}$):** Projects sub-block features back down to the latent space dimension ($D_{\text{latent}}$).
-
-### The Deep Architecture
-The original network consists of:
-*   A front projection layer (`proj`).
-*   **$K$ sequential residual blocks**. Each block $k$ maps intermediate latent features $x$ as:
-    $$\text{Block}_k(x) = x + W_{\text{out}}^{(k)} \operatorname{ReLU}\left(W_{\text{in}}^{(k)} x + b_{\text{in}}^{(k)}\right) + b_{\text{out}}^{(k)}$$
-*   A final output classification layer (`last`).
-
-### 🔍 The Combinatorial Challenge
-With a massive search space of potential combinations, brute-forcing is mathematically impossible. 
-
-You must perform mathematical and structural analysis on the raw weight matrices to uncover indicator signals left behind during model training that allow you to:
-1.  **Pair:** Match each input projection ($W_{\text{in}}$) to its corresponding output projection ($W_{\text{out}}$) for all $K$ blocks.
-2.  **Sequence:** Order the $K$ reassembled blocks in their original sequential sequence ($0 \dots K-1$).
+The final objective is to recover the exact architecture and block ordering such that the reconstructed model achieves a **Mean Squared Error (MSE) of exactly 0.0** when compared against the original model's classification logits.
 
 ---
 
-## COMPILER REPOSITORY TOPOLOGY
+## Mission Objectives
 
-This workspace is structured as a self-contained local development environment:
+Your reconstruction process must:
+
+1. Identify the role of every weight fragment.
+2. Correctly pair residual block components.
+3. Recover the original sequential block ordering.
+4. Reconstruct the complete network.
+5. Achieve an exact prediction match with the original model.
+
+---
+
+> **IMPORTANT**
+>
+> Official evaluation details, scoring methodology, submission rules, and challenge constraints are described in **RULES.md**.
+>
+> Please read the rules carefully before attempting reconstruction.
+
+---
+
+# The Scrambled Components
+
+All weight fragments are stored inside:
+
+```text
+data/pieces/
+```
+
+Each file contains one isolated parameter component from the original network.
+
+Your first task is to classify every piece according to its tensor dimensions and structural properties.
+
+The components belong to one of the following categories:
+
+| Component | Description                                                          |
+| --------- | -------------------------------------------------------------------- |
+| `proj`    | Front projection layer mapping input features into latent space      |
+| `last`    | Final classification layer mapping latent features to output classes |
+| `W_in`    | Residual block input projection                                      |
+| `W_out`   | Residual block output projection                                     |
+
+---
+
+# The Deep Architecture
+
+The original model consists of:
+
+1. A front projection layer (`proj`)
+2. **K sequential residual blocks**
+3. A final classification layer (`last`)
+
+The overall forward pass is:
+
+```text
+Input
+  │
+  ▼
+proj
+  │
+  ▼
+Block₀
+  │
+  ▼
+Block₁
+  │
+  ▼
+...
+  │
+  ▼
+Blockₖ₋₁
+  │
+  ▼
+last
+  │
+  ▼
+Output Logits
+```
+
+Each residual block transforms latent features `x` according to:
+
+```math
+Block_k(x)
+=
+x
++
+W_{out}^{(k)}
+ReLU
+\left(
+W_{in}^{(k)}x+b_{in}^{(k)}
+\right)
++
+b_{out}^{(k)}
+```
+
+where:
+
+* `W_in^(k)` projects latent features into a hidden subspace.
+* `ReLU` introduces non-linearity.
+* `W_out^(k)` projects features back into latent space.
+* The residual connection preserves information flow.
+
+---
+
+# Reconstruction Challenge
+
+Simply identifying layer types is not enough.
+
+You must solve two difficult forensic tasks:
+
+## 1. Pairing
+
+Determine which input projection belongs to which output projection.
+
+Recover all pairs:
+
+```text
+(W_in^(0), W_out^(0))
+(W_in^(1), W_out^(1))
+...
+(W_in^(K-1), W_out^(K-1))
+```
+
+A single incorrect pairing prevents perfect reconstruction.
+
+---
+
+## 2. Sequencing
+
+After recovering valid block pairs, determine their original order:
+
+```text
+Block₀ → Block₁ → Block₂ → ... → Blockₖ₋₁
+```
+
+Since residual blocks are not labeled, the original sequence must be inferred through mathematical analysis of the weights and training-induced signatures.
+
+---
+
+# Why Brute Force Fails
+
+The search space grows factorially with the number of blocks:
+
+```math
+K! \times (possible\ pairings)
+```
+
+Even for moderate values of `K`, exhaustive search becomes computationally infeasible.
+
+Successful solutions will require:
+
+* Weight matrix analysis
+* Statistical signatures
+* Spectral properties
+* Correlation structures
+* Learned feature alignment
+* Training-induced fingerprints
+
+rather than brute-force enumeration.
+
+---
+
+# Repository Structure
 
 ```text
 model-reconstruction-chaos/
 ├── data/
-│   ├── pieces/                    # Scrambled weight fragments (piece_0.pth to piece_N.pth)
-│   ├── historical_data.csv        # Calibration alignment telemetry
+│   ├── pieces/
+│   │   ├── piece_0.pth
+│   │   ├── piece_1.pth
+│   │   └── ...
+│   │
+│   └── historical_data.csv
+│
 ├── samples/
-│   ├── sample_submission.csv      # Standard configuration layout
-│   └── random_submission.csv      # Example randomized baseline mapping
-├── starter_kit.ipynb              # Guided interactive forensic starter notebook
-├── requirements.txt               # Required package dependencies
-├── README.md                      # This main guide
-└── RULES.md                       # Comprehensive Rule Book
+│   ├── sample_submission.csv
+│   └── random_submission.csv
+│
+├── starter_kit.ipynb
+├── requirements.txt
+├── README.md
+└── RULES.md
 ```
 
 ---
 
-## GETTING STARTED (DEPLOYMENT GUIDE)
+# Getting Started
 
-### 1. Synchronize the Repository
-Operatives should establish their local working environment branch:
+## 1. Clone the Repository
+
 ```bash
-# Clone the central NSOC challenge grid
 git clone https://github.com/chocopie247/OPERATION-REBUILD_FROM_CHAOS.git
-cd model-reconstruction-chaos
 
-# Spawn your dedicated team branch
+cd OPERATION-REBUILD_FROM_CHAOS
+```
+
+---
+
+## 2. Create Your Team Branch
+
+```bash
 git checkout -b team-[your_team_name]
 ```
 
-### 2. Launch the Analytics Starter Notebook
-We recommend opening the notebook first to understand how to load and parse the raw tensors:
+---
+
+## 3. Launch the Starter Notebook
+
+The provided notebook demonstrates how to:
+
+* Load fragments
+* Inspect tensor dimensions
+* Analyze weight statistics
+* Generate candidate pairings
+
+Launch it with:
+
 ```bash
 jupyter notebook starter_kit.ipynb
 ```
 
-### 3. Format Your Submission Payload
-Save your optimal reassembled configuration as `submission.csv` containing a header `block_index,inp_piece,out_piece`. You only need to submit the block sequence mapping for indices $0 \dots K-1$:
+---
+
+# Submission Format
+
+Create a file named:
+
+```text
+submission.csv
+```
+
+with the following structure:
 
 ```csv
 block_index,inp_piece,out_piece
@@ -89,21 +255,101 @@ block_index,inp_piece,out_piece
 ...
 K-1,piece_Y.pth,piece_Z.pth
 ```
-*(Refer to the files in `samples/` for concrete layout formats).*
----
 
-## 🏆 LEADERBOARD JUDGING & TIE-BREAKERS
+where:
 
-Submissions will be ranked on the leaderboard using the following sequential tie-breakers:
-1.  **Prediction Logits MSE (Primary Metric):** Target: Exactly `0.0`.
-2.  **Pairing Accuracy:** Target: $K/K$ correct connections.
-3.  **Exact Sequence Match:** Target: Perfect sequential alignment.
-4.  **Forward Evaluations (Efficiency Tie-Breaker):** Total number of model evaluations. The most computationally efficient solver wins.
-5.  **Submission Timestamp:** Earliest transmission wins!
+* `block_index` = recovered block position
+* `inp_piece` = corresponding `W_in`
+* `out_piece` = corresponding `W_out`
+
+Only residual block mappings need to be submitted.
 
 ---
 
+# Evaluation Criteria
+
+Submissions are ranked using the following criteria:
+
+## 1. Prediction Logits MSE (Primary)
+
+Target:
+
+```text
+0.0
 ```
+
+Perfect reconstruction yields an exact match with the original model.
+
+---
+
+## 2. Pairing Accuracy
+
+```text
+K / K Correct Pairings
+```
+
+---
+
+## 3. Sequence Accuracy
+
+Exact recovery of the original block ordering.
+
+---
+
+## 4. Computational Efficiency
+
+Measured by:
+
+```text
+Total Forward Evaluations
+```
+
+Fewer evaluations rank higher.
+
+---
+
+## 5. Submission Timestamp
+
+Earlier submissions win remaining ties.
+
+---
+
+# Recommended Strategy
+
+Successful teams typically follow this workflow:
+
+```text
+Tensor Inspection
+       │
+       ▼
+Role Classification
+       │
+       ▼
+Pair Recovery
+       │
+       ▼
+Block Ordering
+       │
+       ▼
+Model Reconstruction
+       │
+       ▼
+Prediction Validation
+       │
+       ▼
+Final Submission
+```
+
+---
+
+# Final Directive
+
+```text
 [OPERATIONAL DIRECTIVE]
-RESTORE ALIGNMENT. REBUILD FROM CHAOS.
+
+RESTORE ALIGNMENT.
+REBUILD THE NETWORK.
+RECOVER THE TRUTH.
+
+GOOD LUCK, OPERATIVE.
 ```
