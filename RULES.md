@@ -146,15 +146,6 @@ The scrambled files consist of dictionary states containing weight and bias tens
 *   **Block Input Projections ($W_{\text{in}}$):** Maps latent features $D_{\text{latent}}$ up to a sub-block dimension $D_{\text{sub}}$.
 *   **Block Output Projections ($W_{\text{out}}$):** Maps sub-block dimensions $D_{\text{sub}}$ back down to $D_{\text{latent}}$.
 
-### Residual Block Architecture
-Each reconstructed block $k \in [0, K-1]$ maps incoming features $x$ using the following residual logic:
-
-$$
-\text{Block}_k(x)=x+W_{\text{out}}^{(k)}\text{ReLU}\left(W_{\text{in}}^{(k)}x+b_{\text{in}}^{(k)}\right)+b_{\text{out}}^{(k)}
-$$
-
-The objective is to discover the correct pairings $(W_{\text{in}}^{(k)}, W_{\text{out}}^{(k)})$ and sequence order $0 \dots K-1$ that reconstructs the network.
-
 ---
 
 ## 7. ALLOWED FILE FORMATS
